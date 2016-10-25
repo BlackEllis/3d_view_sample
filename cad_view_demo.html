@@ -2,9 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>dxf view sample</title>
+    <title>3d pdf sample</title>
+    <script src="./js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="./js/three.js-master/build/three.min.js" type="text/javascript"></script>
+    <script src="./js/three-dxf/dist/three-dxf.js" type="text/javascript"></script>
+    <script src="./js/dxf-parser/dist/dxf-parser.js" type="text/javascript"></script>
+    <script src="./js/jsc3d/jsc3d.js" type="text/javascript"></script>
+    <script src="./js/jsc3d/jsc3d.webgl.js" type="text/javascript"></script>
+    <script src="./js/jsc3d/jsc3d.touch.js" type="text/javascript"></script>
 </head>
 <body>
-
+    <canvas id="cv" width="600" height="600"></canvas>
+    <script type="text/javascript">
+        var canvas = document.getElementById('cv');
+        var viewer = new JSC3D.Viewer(canvas);
+        viewer.setParameter('SceneUrl', './resource/screw.obj');
+        viewer.setParameter('ModelColor', '#CAA618');
+        viewer.setParameter('BackgroundColor1', '#FFFFFF');
+        viewer.setParameter('BackgroundColor2', '#383840');
+        viewer.setParameter('RenderMode', 'texturesmooth');
+        viewer.init();
+        viewer.update();
+        var ctx = canvas.getContext('2d');
+        viewer.onmouseup = function(x, y) {
+            viewer.update(true);
+        };
+    </script>
 </body>
 </html>
