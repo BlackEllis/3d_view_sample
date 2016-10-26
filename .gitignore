@@ -1,0 +1,9 @@
+/resource/cover.*
+/resource/*.zip
+/resource/screw.*
+/js/dxf-parser
+/js/jsc3d
+/js/three-dxf
+/js/dxf
+/js/three.js-master
+/resource/*.pdf

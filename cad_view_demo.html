@@ -5,28 +5,63 @@
     <title>3d pdf sample</title>
     <script src="./js/jquery-3.1.1.min.js" type="text/javascript"></script>
     <script src="./js/three.js-master/build/three.min.js" type="text/javascript"></script>
-    <script src="./js/three-dxf/dist/three-dxf.js" type="text/javascript"></script>
-    <script src="./js/dxf-parser/dist/dxf-parser.js" type="text/javascript"></script>
     <script src="./js/jsc3d/jsc3d.js" type="text/javascript"></script>
     <script src="./js/jsc3d/jsc3d.webgl.js" type="text/javascript"></script>
     <script src="./js/jsc3d/jsc3d.touch.js" type="text/javascript"></script>
-</head>
-<body>
-    <canvas id="cv" width="600" height="600"></canvas>
     <script type="text/javascript">
-        var canvas = document.getElementById('cv');
-        var viewer = new JSC3D.Viewer(canvas);
-        viewer.setParameter('SceneUrl', './resource/screw.obj');
-        viewer.setParameter('ModelColor', '#CAA618');
-        viewer.setParameter('BackgroundColor1', '#FFFFFF');
-        viewer.setParameter('BackgroundColor2', '#383840');
-        viewer.setParameter('RenderMode', 'texturesmooth');
-        viewer.init();
-        viewer.update();
-        var ctx = canvas.getContext('2d');
-        viewer.onmouseup = function(x, y) {
-            viewer.update(true);
-        };
+        function initialize() {
+            canvas = document.getElementById('cv');
+            viewer = new JSC3D.Viewer(canvas);
+        }
+
+        function reload_model(file_name) {
+            viewer.resetScene();
+            viewer.setParameter('SceneUrl', file_name);
+            viewer.setParameter('ModelColor', '#CAA618');
+            viewer.setParameter('BackgroundColor1', '#383840');
+            viewer.setParameter('BackgroundColor2', '#383840');
+            viewer.setParameter('RenderMode', 'texturesmooth');
+            viewer.init();
+            viewer.setDefinition("high");
+            viewer.update();
+            var ctx = canvas.getContext('2d');
+            viewer.onmouseup = function(x, y) {
+                viewer.update(false);
+            };
+        }
+
+        function load_objct(file_name1) {
+            var loader = new JSC3D.ObjLoader()
+            loader.onload = function (scene) {
+                viewer.abortUnfinishedLoadingFn = null;
+                viewer.setupScene(scene);
+                if(viewer.onloadingcomplete && (typeof viewer.onloadingcomplete) == 'function')
+                viewer.onloadingcomplete();
+            };
+
+            loader.onresource = function(resource) {
+        		if((resource instanceof JSC3D.Texture) && viewer.isMipMappingOn && !resource.hasMipmap())
+        			resource.generateMipmaps();
+        		viewer.update();
+        	};
+
+            loader.loadFromUrl(file_name1);
+            viewer.resetScene();
+            viewer.init();
+            viewer.setDefinition("high");
+            viewer.update();
+            var ctx = canvas.getContext('2d');
+            viewer.onmouseup = function(x, y) {
+                viewer.update(false);
+            };
+        }
     </script>
+</head>
+<body onload="initialize()">
+    <div>
+        <button type="button" name="change_model1" onclick="reload_model('./resource/Rock.obj')">sample1</button>
+        <button type="button" name="change_model2" onclick="load_objct('./resource/Rock.obj')">sample2</button>
+    </div>
+    <canvas id="cv" width="600" height="600"></canvas>
 </body>
 </html>
