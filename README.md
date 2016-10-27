@@ -1,4 +1,4 @@
-# obj_view_sample
+# 3d_view_sample
 ## 使用ライブラリ
 + jsc3d [Link](https://github.com/xxv/jsc3d)
 
